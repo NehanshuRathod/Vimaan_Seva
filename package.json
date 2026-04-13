@@ -1,0 +1,27 @@
+{
+  "name": "flight-booking-system",
+  "version": "1.0.0",
+  "description": "This is a fullstack flight booking web app",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon -r dotenv/config --experimental-json-modules src/server.js"
+  },
+  "bugs": {
+    "url": "https://github.com/RDFearless/Flight-Booking-System/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RDFearless/Flight-Booking-System.git"
+  },
+  "license": "ISC",
+  "author": "Rudra Desai",
+  "type": "module",
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongoose": "^9.0.1",
+    "nodemon": "^3.1.11"
+  }
+}
