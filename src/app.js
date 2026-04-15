@@ -1,6 +1,5 @@
 import express from "express"
 import cors from "cors"
-import cookieParser from "cookie-parser";
 
 const app = express(); // entry point of our backend
 
@@ -14,7 +13,12 @@ app.use(express.json({limit: "16kb"}));
 app.use(express.urlencoded({extended: true, limit: "16kb"}));
 app.use(express.static("public"));
 app.use(cors(corsOptions));
-app.use(cookieParser());
+
+
+// Routers
+import flightRouter from "./interfaces/routes/flight.route.js"
+
+app.use("/api/v1/flights", flightRouter);
 
 
 export { app }
