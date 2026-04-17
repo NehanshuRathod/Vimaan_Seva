@@ -1,18 +1,21 @@
 import express from "express";
 import {
-    createBookingCont,
-    bookTicketCont,
-    getBookingByIdCont,
-    getBookingByPNRCont,
-    getUserBookingHistoryCont,
-} from "../controllers/booking.controller.js";
+    createFlightCont,
+    getAllFlightsCont,
+    searchFlightsCont,
+    getFlightCont,
+    getFlightPriceCont,
+} from "../controllers/flight.controller.js";
 
 const router = express.Router();
 
-router.route("/").post(bookTicketCont);
-router.route("/:userId/:flightId/:passengerName").get(createBookingCont);
-router.route("/:id").get(getBookingByIdCont);
-router.route("/pnr/:pnr").get(getBookingByPNRCont);
-router.route("/user/:userId/history").get(getUserBookingHistoryCont);
+
+router.route("/").post(createFlightCont).get(getAllFlightsCont);
+
+router.route("/search").get(searchFlightsCont);
+
+router.route("/:id").get(getFlightCont);
+
+router.route("/:id/price").get(getFlightPriceCont); 
 
 export default router;
