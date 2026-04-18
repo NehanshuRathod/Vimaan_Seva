@@ -69,16 +69,27 @@ const createFlightCont = asyncHandler(async (req, res) => {
 // SEARCH FUNCTIONALITIES
 
 // 1. Fetch 10 flights from DB
-const getAllFlightsCont = asyncHandler(async (_, res) => {
-    const flights = await getAllFlights();
+const getAllFlightsCont = asyncHandler(async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
 
-    if (flights == null) {
+    if (page < 1) {
+        throw new ApiError(400, "Page number must be greater than 0");
+    }
+
+    if (limit < 1 || limit > 100) {
+        throw new ApiError(400, "Limit must be between 1 and 100");
+    }
+
+    const result = await getAllFlights(page, limit);
+
+    if (result == null) {
         throw new ApiError(500, "Internal Server Error");
     }
 
     return res
         .status(200)
-        .json(new ApiResponse(200, flights, "List of 10 flights"));
+        .json(new ApiResponse(200, result, "Flights fetched successfully"));
 });
 
 // 2. Flights between cityA and cityB

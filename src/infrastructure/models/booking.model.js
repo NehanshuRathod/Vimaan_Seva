@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 
 const bookingSchema = new Schema(
     {
@@ -7,7 +8,7 @@ const bookingSchema = new Schema(
             ref: "User",
             required: true,
         },
-        
+
         flightDetails: {
             type: Schema.Types.ObjectId,
             ref: "Flight",
@@ -21,7 +22,7 @@ const bookingSchema = new Schema(
 
         passengerName: {
             type: String,
-            required: true
+            required: true,
         },
 
         PNR: {
@@ -32,5 +33,7 @@ const bookingSchema = new Schema(
     },
     { timestamps: true }
 );
+
+bookingSchema.plugin(mongooseAggregatePaginate);
 
 export const Booking = mongoose.model("Booking", bookingSchema);

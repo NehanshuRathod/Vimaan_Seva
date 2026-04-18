@@ -78,19 +78,25 @@ const getBookingByPNRCont = asyncHandler(async (req, res) => {
 
 const getUserBookingHistoryCont = asyncHandler(async (req, res) => {
     const { userId } = req.params;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
 
     isIdValid(userId);
 
-    const bookings = await getUserBookingHistory(userId);
+    if (page < 1) {
+        throw new ApiError(400, "Page number must be greater than 0");
+    }
+
+    if (limit < 1 || limit > 50) {
+        throw new ApiError(400, "Limit must be between 1 and 50");
+    }
+
+    const result = await getUserBookingHistory(userId, page, limit);
 
     return res
         .status(200)
         .json(
-            new ApiResponse(
-                200,
-                bookings,
-                "Booking history fetched successfully"
-            )
+            new ApiResponse(200, result, "Booking history fetched successfully")
         );
 });
 

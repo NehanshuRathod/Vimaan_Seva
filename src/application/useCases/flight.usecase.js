@@ -5,8 +5,8 @@ const createFlight = async (flightData) => {
     return await flightRepository.create(flightData);
 };
 
-const getAllFlights = async () => {
-    return await flightRepository.findAll();
+const getAllFlights = async (page = 1, limit = 10) => {
+    return await flightRepository.findAll(page, limit);
 };
 
 const searchFlights = async (flightPath) => {

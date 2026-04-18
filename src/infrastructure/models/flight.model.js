@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 import { indianCities } from "../../constants.js";
 
 const flightSchema = new Schema(
@@ -30,5 +31,7 @@ const flightSchema = new Schema(
     },
     { timestamps: true }
 );
+
+flightSchema.plugin(mongooseAggregatePaginate);
 
 export const Flight = mongoose.model("Flight", flightSchema);

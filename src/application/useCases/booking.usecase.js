@@ -16,29 +16,32 @@ const calculateFinalPrice = async (flightId, flightData) => {
     // Calculate surge price
     const flight = new Flight(flightData);
     return flight.calculateSurgePrice(recentAttempts);
-}
+};
 
 const generatePNR = () => {
     return "PNR" + Date.now() + Math.floor(Math.random() * 1000);
-}
+};
 
 const doTransaction = async (userId, flightId, isBooking = false) => {
     const flightData = await flightRepository.findByIdOrThrow(flightId);
-    
+
     const finalPrice = await calculateFinalPrice(flightId, flightData);
-    
+
     const balance = await walletRepository.getBalance(userId);
-    
-    if(finalPrice > balance) {
-        throw new ApiError(401, "Insufficient Balance. Please add funds to your wallet to complete this booking.")
+
+    if (finalPrice > balance) {
+        throw new ApiError(
+            401,
+            "Insufficient Balance. Please add funds to your wallet to complete this booking."
+        );
     }
-    
-    if(isBooking) {
+
+    if (isBooking) {
         await walletRepository.updateBalance(userId, balance - finalPrice);
     }
-    
+
     return finalPrice;
-}
+};
 
 const createBooking = async (userId, flightId, passengerName) => {
     // Validate user and flight
@@ -60,9 +63,7 @@ const createBooking = async (userId, flightId, passengerName) => {
     };
 
     return booking;
-}
-
-
+};
 
 const bookTicket = async (userId, flightId, passengerName) => {
     // Validate user and flight exist
@@ -83,7 +84,7 @@ const bookTicket = async (userId, flightId, passengerName) => {
     });
 
     return booking;
-}
+};
 
 const getBookingById = async (bookingId) => {
     const booking = await bookingRepository.findById(bookingId);
@@ -103,13 +104,13 @@ const getBookingByPNR = async (pnr) => {
     }
 
     return booking;
-}
+};
 
-const getUserBookingHistory = async (userId) => {
+const getUserBookingHistory = async (userId, page = 1, limit = 5) => {
     await userRepository.findByIdOrThrow(userId);
 
-    return await bookingRepository.findByUserId(userId);
-}
+    return await bookingRepository.findByUserId(userId, page, limit);
+};
 
 export {
     createBooking,
@@ -117,4 +118,4 @@ export {
     getBookingById,
     getBookingByPNR,
     getUserBookingHistory,
-}
+};
