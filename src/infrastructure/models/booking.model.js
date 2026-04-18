@@ -7,6 +7,7 @@ const bookingSchema = new Schema(
             ref: "User",
             required: true,
         },
+        
         flightDetails: {
             type: Schema.Types.ObjectId,
             ref: "Flight",
@@ -18,9 +19,9 @@ const bookingSchema = new Schema(
             required: true,
         },
 
-        bookingDate: {
-            type: Date,
-            default: Date.now,
+        passengerName: {
+            type: String,
+            required: true
         },
 
         PNR: {

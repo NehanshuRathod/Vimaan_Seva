@@ -18,9 +18,14 @@ app.use(cors(corsOptions));
 import flightRouter from "./interfaces/routes/flight.route.js";
 import walletRouter from "./interfaces/routes/wallet.route.js";
 import userRouter from "./interfaces/routes/user.route.js";
+import bookingAttemptRouter from "./interfaces/routes/bookingAttempt.route.js";
+import bookingRouter from "./interfaces/routes/booking.route.js";
+
 
 app.use("/api/v1/flights", flightRouter);
 app.use("/api/v1/wallet", walletRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/bookingAttempts", bookingAttemptRouter);
+app.use("/api/v1/bookings", bookingRouter);
 
 export { app };
