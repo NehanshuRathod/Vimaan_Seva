@@ -8,6 +8,15 @@ const findById = async (flightId) => {
     return Flight.findById(flightId);
 }
 
+const findByIdOrThrow = async (flightId) => {
+    const flight = await findById(flightId);
+    if (!flight) {
+        throw new ApiError(404, "Flight not found");
+    }
+    
+    return flight;
+}
+
 const findAll = async () => {
     return Flight.find().limit(10);
 }
@@ -24,5 +33,5 @@ const search = async ({ departureCity, arrivalCity }) => {
     return await Flight.find({departureCity, arrivalCity}).limit(10);
 }
 
-const flightRepository = { create, findById, findAll, update, remove, search };
+const flightRepository = { create, findById, findByIdOrThrow, findAll, update, remove, search };
 export default flightRepository;
