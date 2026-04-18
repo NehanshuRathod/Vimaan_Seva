@@ -1,15 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    data: [],
-    loading: false,
-    error: null,
+    searchResults: [],
 };
 
 const flightsSlice = createSlice({
     name: "flights",
     initialState,
-    reducers: {},
+    reducers: {
+        setSearchResults: (state, action) => {
+            state.searchResults = action.payload;
+        },
+        clearSearchResults: (state) => {
+            state.searchResults = [];
+        },
+    },
 });
 
+export const { setSearchResults, clearSearchResults } = flightsSlice.actions;
 export default flightsSlice.reducer;
