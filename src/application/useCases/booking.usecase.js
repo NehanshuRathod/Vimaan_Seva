@@ -52,7 +52,7 @@ const createBooking = async (userId, flightId, passengerName) => {
     // Record booking attempt
     await bookingAttemptRepository.create(userId, flightId);
 
-    const finalPrice = await doTransaction(userId, flightId);
+    const finalPrice = await calculateFinalPrice(flightId, flightData);
 
     const booking = {
         userDetails: userId,

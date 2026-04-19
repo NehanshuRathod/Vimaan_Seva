@@ -11,7 +11,7 @@ import {
 } from "../../application/useCases/booking.usecase.js";
 
 const createBookingCont = asyncHandler(async (req, res) => {
-    const { userId, flightId, passengerName } = req.body;
+    const { userId, flightId, passengerName } = req.params;
 
     if (!userId || !flightId || !passengerName) {
         throw new ApiError(
