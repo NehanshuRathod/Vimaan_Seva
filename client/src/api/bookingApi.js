@@ -3,9 +3,9 @@ import axiosClient from "./axiosClient.js";
 export class BookingService {
     async createBooking({ userId, flightId, passengerName }) {
         try {
-            return await axiosClient.get("/bookings", {
-                params: { userId, flightId, passengerName },
-            });
+            return await axiosClient.get(
+                `/bookings/${userId}/${flightId}/${passengerName}`
+            );
         } catch (error) {
             console.error(error);
             throw error;

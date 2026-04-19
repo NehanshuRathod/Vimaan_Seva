@@ -9,10 +9,10 @@ import {
 
 const router = express.Router();
 
-router.route("/").post(bookTicketCont);
-router.route("/:userId/:flightId/:passengerName").get(createBookingCont);
-router.route("/:id").get(getBookingByIdCont);
-router.route("/pnr/:pnr").get(getBookingByPNRCont);
 router.route("/user/:userId/history").get(getUserBookingHistoryCont);
+router.route("/pnr/:pnr").get(getBookingByPNRCont);
+router.route("/:userId/:flightId/:passengerName").get(createBookingCont);
+router.route("/").post(bookTicketCont);
+router.route("/:id").get(getBookingByIdCont);
 
 export default router;

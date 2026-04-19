@@ -19,7 +19,6 @@ const createBookingCont = asyncHandler(async (req, res) => {
             "User ID, Flight ID, and Passenger Name are required"
         );
     }
-
     isIdValid(userId);
     isIdValid(flightId);
 
@@ -80,7 +79,8 @@ const getUserBookingHistoryCont = asyncHandler(async (req, res) => {
     const { userId } = req.params;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 5;
-
+    console.log(userId);
+    
     isIdValid(userId);
 
     if (page < 1) {
