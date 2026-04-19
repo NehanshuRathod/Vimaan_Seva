@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import flightService from "../api/flightApi";
 import FlightCard from "../components/FlightCard";
 import { toast } from "react-toastify";
@@ -8,32 +9,48 @@ const FlightSearchPage = () => {
     const [pagination, setPagination] = useState(null);
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
+    const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+
+    const from = searchParams.get("from");
+    const to = searchParams.get("to");
 
     useEffect(() => {
         (async () => {
             await fetchFlights(currentPage);
         })();
-    }, [currentPage]);
+    }, [currentPage, from, to]);
 
     const fetchFlights = async (page) => {
         try {
             setLoading(true);
-            const response = await flightService.getAllFlights(page, 10);
-            console.log(response);
+            let response;
 
-            setFlights(response.data.flights);
-            setPagination({
-                currentPage: response.data.page,
-                totalPages: response.data.totalPages,
-                totalItems: response.data.totalItems,
-                hasNextPage: response.data.hasNextPage,
-                hasPrevPage: response.data.hasPrevPage,
-            });
+            if (from && to) {
+                response = await flightService.searchFlights(from, to);
+                setFlights(response.data.flights || []);
+                setPagination(null);
+            } else {
+                response = await flightService.getAllFlights(page, 10);
+                setFlights(response.data.flights);
+                setPagination({
+                    currentPage: response.data.page,
+                    totalPages: response.data.totalPages,
+                    totalItems: response.data.totalItems,
+                    hasNextPage: response.data.hasNextPage,
+                    hasPrevPage: response.data.hasPrevPage,
+                });
+            }
         } catch (error) {
             toast.error(error.message);
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleShowAll = () => {
+        navigate("/flights");
+        setCurrentPage(1);
     };
 
     const handlePrevPage = () => {
@@ -53,9 +70,28 @@ const FlightSearchPage = () => {
     return (
         <div className="min-h-screen bg-gray-50 py-8">
             <div className="container mx-auto px-6">
-                <h1 className="text-3xl font-bold text-gray-800 mb-8">
-                    Available Flights
-                </h1>
+                <div className="flex justify-between items-center mb-8">
+                    <div>
+                        <h1 className="text-3xl font-bold text-gray-800">
+                            {from && to
+                                ? `Flights from ${from} to ${to}`
+                                : "Available Flights"}
+                        </h1>
+                        {from && to && (
+                            <p className="text-gray-600 mt-2">
+                                Showing search results
+                            </p>
+                        )}
+                    </div>
+                    {from && to && (
+                        <button
+                            onClick={handleShowAll}
+                            className="px-6 py-2 bg-white border-2 border-orange-500 text-orange-500 hover:bg-orange-50 font-semibold rounded-lg transition"
+                        >
+                            Show All Flights
+                        </button>
+                    )}
+                </div>
 
                 {loading && (
                     <div className="text-center py-12">
