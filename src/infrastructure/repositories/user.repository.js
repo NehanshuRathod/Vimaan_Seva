@@ -5,10 +5,6 @@ const create = async (userData) => {
     return await User.create(userData);
 };
 
-const findById = async (userId) => {
-    return await User.findById(userId);
-};
-
 const findByUsername = async (username) => {
     return await User.findOne({ username });
 };
@@ -22,16 +18,31 @@ const findByIdOrThrow = async (userId) => {
 };
 
 const update = async (userId, userData) => {
-    return await User.findByIdAndUpdate(userId, userData, { new: true });
+    const updatedData = await User.findByIdAndUpdate(
+        userId, 
+        userData, 
+        { new: true }
+    );
+    
+    if(!updatedData) {
+        throw new ApiError(404, "User not found, error updating data");
+    }
+    
+    return updatedData;
 };
 
 const remove = async (userId) => {
-    return await User.findByIdAndDelete(userId);
+    const deleted = await User.findByIdAndDelete(userId);
+    
+    if(!deleted) {
+        throw new ApiError(404, "User not found");
+    }
+    
+    return deleted;
 };
 
 export default {
     create,
-    findById,
     findByUsername,
     findByIdOrThrow,
     update,

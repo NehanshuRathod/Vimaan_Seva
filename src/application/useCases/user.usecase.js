@@ -18,14 +18,10 @@ const getUser = async (userId) => {
 };
 
 const updateUser = async (userId, userData) => {
-    await userRepository.findByIdOrThrow(userId);
-
     return await userRepository.update(userId, userData);
 };
 
 const deleteUser = async (userId) => {
-    await userRepository.findByIdOrThrow(userId);
-
     return await userRepository.remove(userId);
 };
 

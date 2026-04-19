@@ -38,10 +38,6 @@ const getUserCont = asyncHandler(async (req, res) => {
     isIdValid(userId);
 
     const user = await getUser(userId);
-    
-    if (!user) {
-        throw new ApiError(404, "User not found");
-    }
 
     return res
         .status(200)
