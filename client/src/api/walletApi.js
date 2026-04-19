@@ -38,6 +38,26 @@ export class WalletService {
             throw error;
         }
     }
+
+    async ensureWalletExists(userId) {
+        let flag = true;
+        try {
+            await this.getWalletBalance(userId);
+            flag = false;
+        } catch (error) {
+            // if (error.response?.status === 404) {
+            //     await this.createWallet(userId);
+            //     return { created: true };
+            // }
+            throw error;
+        } finally {
+            if (flag) {
+                await this.createWallet(userId);
+            }
+
+            return { created: flag };
+        }
+    }
 }
 
 const walletService = new WalletService();

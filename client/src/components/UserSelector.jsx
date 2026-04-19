@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserId } from "../features/user/userSlice";
-import userService from "../api/userApi";
 import { toast } from "react-toastify";
+import useSelectUser from "../hooks/useSelectUser";
 
 const UserSelector = () => {
     const dispatch = useDispatch();
@@ -10,17 +10,19 @@ const UserSelector = () => {
     const [showDropdown, setShowDropdown] = useState(false);
     const [showInput, setShowInput] = useState(false);
     const [inputValue, setInputValue] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const { selectUser } = useSelectUser();
 
-    const handleSetUser = (userId) => {
-        if (!userId || userId.trim() === "") {
-            toast.error("Please enter a valid User ID");
-            return;
+    const handleSetUser = async (userId) => {
+        setIsLoading(true);
+        const success = await selectUser(userId);
+        setIsLoading(false);
+
+        if (success) {
+            setShowDropdown(false);
+            setShowInput(false);
+            setInputValue("");
         }
-        dispatch(setUserId(userId.trim()));
-        setShowDropdown(false);
-        setShowInput(false);
-        setInputValue("");
-        toast.success("User selected successfully!");
     };
 
     const handleInputSubmit = (e) => {
@@ -81,9 +83,10 @@ const UserSelector = () => {
                             <div className="flex gap-2">
                                 <button
                                     type="submit"
-                                    className="flex-1 bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-lg text-sm"
+                                    disabled={isLoading}
+                                    className="flex-1 bg-orange-500 hover:bg-orange-600 disabled:bg-orange-300 text-white font-semibold py-2 px-4 rounded-lg text-sm"
                                 >
-                                    Set User
+                                    {isLoading ? "Loading..." : "Set User"}
                                 </button>
                                 <button
                                     type="button"
