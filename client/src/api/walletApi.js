@@ -21,7 +21,7 @@ export class WalletService {
 
     async addFunds(userId, amount) {
         try {
-            return await axiosClient.post(`/wallet/${userId}/add`, { amount });
+            return await axiosClient.patch(`/wallet/${userId}/add`, { amount });
         } catch (error) {
             console.error(error);
             throw error;
@@ -30,7 +30,7 @@ export class WalletService {
 
     async deductFunds(userId, amount) {
         try {
-            return await axiosClient.post(`/wallet/${userId}/deduct`, {
+            return await axiosClient.patch(`/wallet/${userId}/deduct`, {
                 amount,
             });
         } catch (error) {
