@@ -1,6 +1,11 @@
 import { formatPrice, formatTimeAndDate } from "../utils/format";
+import { downloadTicketPDF } from "../services/pdfService";
 
 const BookingCard = ({ booking }) => {
+    const handleDownloadPDF = () => {
+        downloadTicketPDF(booking);
+    };
+
     return (
         <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 border border-gray-200">
             <div className="flex justify-between items-start mb-4">
@@ -67,7 +72,10 @@ const BookingCard = ({ booking }) => {
                 </p>
             </div>
 
-            <button className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors">
+            <button
+                onClick={handleDownloadPDF}
+                className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-4 rounded-lg transition-colors"
+            >
                 Download Ticket
             </button>
         </div>

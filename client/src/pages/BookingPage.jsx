@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import bookingService from "../api/bookingApi";
 import walletService from "../api/walletApi";
 import { formatPrice, formatTimeAndDate } from "../utils/format";
+import { downloadTicketPDF } from "../services/pdfService";
 import { toast } from "react-toastify";
 
 const BookingPage = () => {
@@ -293,7 +294,10 @@ const BookingPage = () => {
                             <div className="border-t border-gray-200 pt-6 space-y-3">
                                 <button
                                     onClick={() => {
-                                        /* PDF download functionality - to be implemented */
+                                        downloadTicketPDF({
+                                            ...confirmedBooking,
+                                            flightDetails: flight,
+                                        });
                                     }}
                                     className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-4 px-6 rounded-lg transition flex items-center justify-center gap-3 text-lg"
                                 >
